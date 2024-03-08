@@ -119,7 +119,11 @@ if ($login == 'logged_in') {
                         </div>
                         <div class="add-cart">
                         <?php
+<<<<<<< HEAD
                         if($login == 'notlogged_in') {
+=======
+                        if($login == 'notlogged_in' || !$name) {
+>>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
                         ?>
                             <button><a href="products.php?item&products=<?php echo $pro_title; ?>&confirm=notlogged_in">buy now</a></button>
                         <?php
@@ -174,7 +178,11 @@ if ($login == 'logged_in') {
                         </div>
                         <div class="add-cart">
                         <?php
+<<<<<<< HEAD
                         if($login == 'notlogged_in') {
+=======
+                        if($login == 'notlogged_in' || !$name) {
+>>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
                         ?>
                             <button><a href="products.php?item&products=<?php echo $pro_title; ?>&confirm=notlogged_in">more details</a></button>
                         <?php
@@ -229,7 +237,11 @@ if ($login == 'logged_in') {
                         </div>
                         <div class="buy-now">
                         <?php
+<<<<<<< HEAD
                         if($login == 'notlogged_in') {
+=======
+                        if($login == 'notlogged_in' || !$name) {
+>>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
                         ?>
                             <button><a href="products.php?item&products=<?php echo $pro_title; ?>&confirm=notlogged_in">add to cart</a></button>
                         <?php
@@ -299,7 +311,11 @@ if ($login == 'logged_in') {
                 width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <?php
+<<<<<<< HEAD
             if($login == 'notlogged_in') {
+=======
+            if($login == 'notlogged_in' || !$name) {
+>>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
         ?>
         <form action="#" method="POST">
             <div class="form">
@@ -716,7 +732,11 @@ if ($login == 'logged_in') {
        <!-- this is your chatbot -->
        <?php
                
+<<<<<<< HEAD
            if($login == 'logged_in') {
+=======
+           if($login == 'logged_in' || !$name) {
+>>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
            
            include 'chatbot.php';
 

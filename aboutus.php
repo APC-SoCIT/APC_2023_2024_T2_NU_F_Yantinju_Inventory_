@@ -76,7 +76,11 @@ So whether you're browsing our website or scrolling through our TikTok feed, kno
 
 <?php 
 }else{
+<<<<<<< HEAD
      header("Location: header.php");
+=======
+     header("Location: index.php");
+>>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
      exit();
 }
  ?>

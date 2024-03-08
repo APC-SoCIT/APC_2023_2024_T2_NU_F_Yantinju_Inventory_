@@ -42,7 +42,11 @@ if($login == 'notlogged_in') {
                 <li><a href="index.php?confirm=notlogged_in">Home</a></li>
                 <li><a href="products.php?confirm=notlogged_in">Products</a></li>
                 <li><a href="faqs.php?confirm=notlogged_in">FAQs</a></li>
+<<<<<<< HEAD
                 <li><a href="aboutus.php?confirm=notlogged_in">About Us</a></li>
+=======
+                <li><a href="#">About Us</a></li>
+>>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
             </ul>
 
             <ul class="nav navbar-nav navbar-right" style="margin-right: 3rem">
@@ -76,7 +80,11 @@ if($login == 'notlogged_in') {
                 <li><a href="index.php?confirm=logged_in">Home</a></li>
                 <li><a href="products.php?confirm=logged_in">Products</a></li>
                 <li><a href="faqs.php?confirm=logged_in">FAQs</a></li>
+<<<<<<< HEAD
                 <li><a href="aboutus.php?confirm=logged_in">About Us</a></li>
+=======
+                <li><a href="#">About Us</a></li>
+>>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
             </ul>
 
             <ul class="nav navbar-nav navbar-right" style="margin-right: 3rem">

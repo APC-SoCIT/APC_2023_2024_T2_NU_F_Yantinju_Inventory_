@@ -6,6 +6,7 @@
                 <?php
                     include('db_conn.php');
 
+<<<<<<< HEAD
                     if($login == 'notlogged_in') {
                         // Set the number of products per page
                         $per_page = 6;
@@ -37,6 +38,21 @@
                         for ($i = 1; $i <= $total_pages; $i++) {
                             echo '<li><a href="?page=' . $i . '&confirm=logged_in">' . $i . '</a></li>';
                         }
+=======
+                    // Set the number of products per page
+                    $per_page = 6;
+
+                    // Query to count the total number of available products
+                    $count_query = "SELECT COUNT(*) AS total FROM paninda WHERE status='Available'";
+                    $count_result = mysqli_query($conn, $count_query);
+                    $total_products = mysqli_fetch_assoc($count_result)['total'];
+                    // Calculate the total number of pages
+                    $total_pages = ceil($total_products / $per_page);
+
+                    // Output pagination links
+                    for ($i = 1; $i <= $total_pages; $i++) {
+                        echo '<li><a href="?page=' . $i . '">' . $i . '</a></li>';
+>>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
                     }
                 ?>
                 </ul>
