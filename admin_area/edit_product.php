@@ -170,6 +170,7 @@ $cat_title = $row_cat['category'];
 
                 </div><!-- form-group Ends -->
 
+<<<<<<< HEAD
                 <?php
 
                 $cat = $_GET['category'];
@@ -313,6 +314,8 @@ $cat_title = $row_cat['category'];
                 }else {
                 ?>
 
+=======
+>>>>>>> 8e21cc0ea55f2bdaa0cd3510fd46ebf7efdd8951
                 <div class="form-group" ><!-- form-group Starts -->
 
                 <label class="col-md-3 control-label" > Quantity</label>
@@ -324,12 +327,15 @@ $cat_title = $row_cat['category'];
                 </div>
 
                 </div><!-- form-group Ends -->
+<<<<<<< HEAD
 
                 
                 <?php
 
                 }
                 ?>
+=======
+>>>>>>> 8e21cc0ea55f2bdaa0cd3510fd46ebf7efdd8951
                
                 <div class="form-group" ><!-- form-group Starts -->
 
@@ -378,6 +384,7 @@ $cat_title = $row_cat['category'];
 
 if(isset($_POST['update'])){
 
+<<<<<<< HEAD
     $product_id = $_POST['product_id'];
     $product_title = $_POST['product_title'];
     $cat = $_POST['cat'];
@@ -428,5 +435,62 @@ if(isset($_POST['update'])){
         echo "<script>window.open('adminpanel.php?products2','_self')</script>";
     }
 }
+=======
+$product_id = $_POST['product_id'];
+$product_title = $_POST['product_title'];
+$cat = $_POST['cat'];
+$product_price = $_POST['product_price'];
+$product_quantity = $_POST['product_quantity'];
+$product_desc = $_POST['product_desc'];
+$status = "Available";
+
+
+$product_img1 = $_FILES['product_img1']['name'];
+//$product_img2 = $_FILES['product_img2']['name'];
+//$product_img3 = $_FILES['product_img3']['name'];
+
+$temp_name1 = $_FILES['product_img1']['tmp_name'];
+//$temp_name2 = $_FILES['product_img2']['tmp_name'];
+//$temp_name3 = $_FILES['product_img3']['tmp_name'];
+
+if(empty($product_img1)){
+
+$product_img1 = $new_p_image1;
+
+}
+
+
+if(empty($product_img2)){
+
+//$product_img2 = $new_p_image2;
+
+}
+
+if(empty($product_img3)){
+
+//$product_img3 = $new_p_image3;
+
+}
+
+
+move_uploaded_file($temp_name1,"images/products/$product_img1");
+//move_uploaded_file($temp_name2,"images/products/$product_img2");
+//move_uploaded_file($temp_name3,"images/products/$product_img3");
+
+$update_product = "UPDATE paninda SET category='$cat', title='$product_title', img1='$product_img1', stock='$product_quantity', price='$product_price', description='$product_desc', status='$status' where id='$product_id'";
+
+$run_product = mysqli_query($conn,$update_product);
+
+if($run_product){
+
+echo "<script> alert('Product has been updated successfully') </script>";
+
+echo "<script>window.open('adminpanel.php?products2','_self')</script>";
+
+}
+
+}
+
+>>>>>>> 8e21cc0ea55f2bdaa0cd3510fd46ebf7efdd8951
 ?>
 
