@@ -74,10 +74,12 @@
 					<button>Log In
 						<i class="zmdi zmdi-arrow-right"></i>
 					</button>
-                    <div class="form-link">
-                        <span>Don't have an account? <a href="signup.php" class="link signup-link">Signup</a></span><br>
+                    <div class="form-link" style="text-align: center;">
+                    <span>Don't have an account? <a href="signup.php" class="link signup-link">Signup</a></span><br>
                     </div>
-                    
+                    <div class="privacy-text" style="text-align: center;">
+                    <a href="https://www.privacy.gov.ph/wp-content/uploads/2016/07/updated-draft-July-12-2016.pdf" style="text-decoration: underline;">Data Privacy Act</a><br>
+                </div>
 				</form>
 			</div>
 		</div>
