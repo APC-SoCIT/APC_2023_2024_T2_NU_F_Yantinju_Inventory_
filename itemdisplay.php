@@ -181,11 +181,7 @@ $fullname = $fname . ' ' . $lname;
   
 
     <?php
-<<<<<<< HEAD
       if($login == 'logged_in') {
-=======
-      if($login == 'logged_in' || !$name) {
->>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
     ?>
       <ul class="breadcrumb" style="background-color: #fff; padding: 0px 0px">
         <li><a href="products.php?confirm=logged_in" style="color: #000;">All</a></li>
@@ -212,11 +208,7 @@ $fullname = $fname . ' ' . $lname;
         $initial_rating = $rating_row['avg_rating'] ?: 0; 
         $total_reviews = $rating_row['total_reviews'] ?: 0; 
         
-<<<<<<< HEAD
         if($login == 'logged_in') {
-=======
-        if($login == 'logged_in' || !$name) {
->>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
         ?>
       <div class="product-rating" id="product-rating" data-product-id="<?php echo $product_id ?>">
         <span class="rate" style="font-size: 24px;"> <!-- Adjust the font-size as needed -->
@@ -255,11 +247,7 @@ $fullname = $fname . ' ' . $lname;
       </div>
 
       <?php
-<<<<<<< HEAD
       if($login == 'logged_in') {
-=======
-      if($login == 'logged_in' || !$name) {
->>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
   
         if($cat == 'Necklaces' || $cat == 'Rings') {
       ?>
@@ -325,11 +313,7 @@ $fullname = $fname . ' ' . $lname;
   <h3>Comments</h3>
 
   <?php
-<<<<<<< HEAD
       if($login == 'logged_in') {
-=======
-      if($login == 'logged_in' || !$name) {
->>>>>>> e0b13804ce943924a3a96582970b7f9a898f7839
   ?>
   <!-- Comment Form -->
   <div class="comment-form">
