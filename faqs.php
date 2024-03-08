@@ -55,7 +55,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                 <button class="acc-btn">What products or services do you offer?</button>
                 <div class="acc-content">
                 <p>
-                Provide a brief overview of the products or services your business offers.
+                At Yantinju Accessories, we specialize in offering a stunning collection of necklaces, rings, earrings, pendants, and bracelets. Each piece is carefully crafted to bring elegance and style to your wardrobe. Whether you're looking for a statement necklace, a delicate pendant, or a timeless pair of earrings, we have something to suit every taste and occasion. Explore our selection and discover the perfect accessory to complement your unique style.
                 </p>
                 </div>
 
@@ -64,7 +64,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                 </button>
                 <div class="acc-content">
                 <p>
-                Include information on phone numbers, email addresses, physical addresses, and any social media profiles.
+                You can reach us directly by contacting our Yantinju Accessories Admin at the following number: +63 9288148208. Whether you have questions about our products, need assistance with an order, or have any other inquiries, our team is here to help.
                 </p>
                 </div>
 
@@ -73,25 +73,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                 </button>
                 <div class="acc-content">
                 <p>
-                Specify the days and hours your business is open.
-                </p>
-                </div>
-
-                <button class="acc-btn">
-                Do you offer online ordering or services?
-                </button>
-                <div class="acc-content">
-                <p>
-                Provide information on any online platforms or services your business offers.
-                </p>
-                </div>
-
-                <button class="acc-btn">
-                What is your return/exchange policy?
-                </button>
-                <div class="acc-content">
-                <p>
-                Outline the terms and conditions for returns or exchanges, including any time limits or conditions.
+                Our website is accessible 24/7, giving you the convenience to browse and make purchases at any time. However, our customer support and assistance are available from 8:00 am to 5:00 pm every day.
                 </p>
                 </div>
 
@@ -100,7 +82,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                 </button>
                 <div class="acc-content">
                 <p>
-                If applicable, provide information on how customers can track their orders.
+                To track your order, simply navigate to the 'Orders' section in your profile. There, you'll find an order tracking feature where you can check the status of your purchase. It'll provide you with real-time updates on the progress of your order.
                 </p>
                 </div>
 
@@ -109,7 +91,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                 </button>
                 <div class="acc-content">
                 <p>
-                List the types of payment your business accepts, such as credit cards, cash, or online payment platforms.
+                At the moment, we only accept Cash on Delivery (COD) as our payment method. This means you can pay for your order in cash when it's delivered to your doorstep. We're constantly evaluating new payment options to enhance your shopping experience.
                 </p>
                 </div>
 
@@ -118,7 +100,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                 </button>
                 <div class="acc-content">
                 <p>
-                If you have a physical location, provide the address and any relevant details.
+                Not at the moment. We're currently exclusively online. However, we're always looking into expanding, so keep an eye out for any updates.
                 </p>
                 </div>
 

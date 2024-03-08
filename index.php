@@ -119,7 +119,7 @@ if ($login == 'logged_in') {
                         </div>
                         <div class="add-cart">
                         <?php
-                        if($login == 'notlogged_in' || !$name) {
+                        if($login == 'notlogged_in') {
                         ?>
                             <button><a href="products.php?item&products=<?php echo $pro_title; ?>&confirm=notlogged_in">buy now</a></button>
                         <?php
@@ -174,7 +174,7 @@ if ($login == 'logged_in') {
                         </div>
                         <div class="add-cart">
                         <?php
-                        if($login == 'notlogged_in' || !$name) {
+                        if($login == 'notlogged_in') {
                         ?>
                             <button><a href="products.php?item&products=<?php echo $pro_title; ?>&confirm=notlogged_in">more details</a></button>
                         <?php
@@ -229,7 +229,7 @@ if ($login == 'logged_in') {
                         </div>
                         <div class="buy-now">
                         <?php
-                        if($login == 'notlogged_in' || !$name) {
+                        if($login == 'notlogged_in') {
                         ?>
                             <button><a href="products.php?item&products=<?php echo $pro_title; ?>&confirm=notlogged_in">add to cart</a></button>
                         <?php
@@ -299,7 +299,7 @@ if ($login == 'logged_in') {
                 width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <?php
-            if($login == 'notlogged_in' || !$name) {
+            if($login == 'notlogged_in') {
         ?>
         <form action="#" method="POST">
             <div class="form">
@@ -353,7 +353,7 @@ if ($login == 'logged_in') {
         <!-- this is your chatbot -->
         <?php
                 
-            if($login == 'logged_in' || !$name) {
+            if($login == 'logged_in') {
             
             include 'chatbot.php';
 
@@ -482,7 +482,7 @@ if ($login == 'logged_in') {
                        </div>
                        <div class="add-cart">
                        <?php
-                       if($login == 'notlogged_in' || !$name) {
+                       if($login == 'notlogged_in') {
                        ?>
                            <button><a href="products.php?item&products=<?php echo $pro_title; ?>&confirm=notlogged_in">buy now</a></button>
                        <?php
@@ -537,7 +537,7 @@ if ($login == 'logged_in') {
                        </div>
                        <div class="add-cart">
                        <?php
-                       if($login == 'notlogged_in' || !$name) {
+                       if($login == 'notlogged_in') {
                        ?>
                            <button><a href="products.php?item&products=<?php echo $pro_title; ?>&confirm=notlogged_in">more details</a></button>
                        <?php
@@ -592,7 +592,7 @@ if ($login == 'logged_in') {
                        </div>
                        <div class="buy-now">
                        <?php
-                       if($login == 'notlogged_in' || !$name) {
+                       if($login == 'notlogged_in') {
                        ?>
                            <button><a href="products.php?item&products=<?php echo $pro_title; ?>&confirm=notlogged_in">add to cart</a></button>
                        <?php
@@ -662,7 +662,7 @@ if ($login == 'logged_in') {
                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
        </div>
        <?php
-           if($login == 'notlogged_in' || !$name) {
+           if($login == 'notlogged_in') {
        ?>
        <form action="#" method="POST">
            <div class="form">
@@ -716,7 +716,7 @@ if ($login == 'logged_in') {
        <!-- this is your chatbot -->
        <?php
                
-           if($login == 'logged_in' || !$name) {
+           if($login == 'logged_in') {
            
            include 'chatbot.php';
 

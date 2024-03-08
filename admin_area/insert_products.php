@@ -195,6 +195,7 @@ if (isset($_POST['submit'])) {
     $product_title = mysqli_real_escape_string($conn, $_POST['product_title']);
     $product_cat = mysqli_real_escape_string($conn, $_POST['cat']);
     $product_price = mysqli_real_escape_string($conn, $_POST['product_price']);
+    $product_count = mysqli_real_escape_string($conn, $_POST['product_count']);
     $product_desc = mysqli_real_escape_string($conn, $_POST['product_desc']);
     $status = "Available";
 
@@ -202,19 +203,43 @@ if (isset($_POST['submit'])) {
     move_uploaded_file($temp_name1, "images/products/$product_img1");
 
     // Insert product information into the database
-    $insert_product = "INSERT INTO paninda (id, title, category, img1, price, description, status) VALUES ('$order_id', '$product_title', '$product_cat', '$product_img1', '$product_price', '$product_desc', '$status')";
+    $insert_product = "INSERT INTO paninda (id, title, category, img1, stock, price, description, status) VALUES ('$order_id', '$product_title', '$product_cat', '$product_img1', '$product_count', '$product_price', '$product_desc', '$status')";
+    $run_product = mysqli_query($conn, $insert_product);
 
-    if ($product_cat == 'Rings' || $product_cat == 'Necklaces') {
-        $run_product = mysqli_query($conn, $insert_product);
 
         if ($run_product) {
-            // Insert stock information into the database for each size
+            if ($product_cat == 'Rings' || $product_cat == 'Necklaces') {
+
             for ($i = 14; $i <= 24; $i += 2) {
                 $product_size_stock = mysqli_real_escape_string($conn, $_POST["product_size_${i}_stock"]);
                 $insert_stock = "INSERT INTO size (id, size, stock) VALUES ('$order_id', '$i', '$product_size_stock')";
                 $run_stock = mysqli_query($conn, $insert_stock);
-            }
 
+                if ($run_stock) {
+            ?>
+
+                <script>
+                    Swal.fire({
+                        title: "You want to add more?",
+                        text: "Product and stock have been inserted successfully!",
+                        icon: "success",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, add more",
+                        cancelButtonText: "No"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "adminpanel.php?insert_products";
+                        } else {
+                            window.location.href = "adminpanel.php?products2";
+                        }
+                    });
+                </script>
+            <?php
+
+                }
+            }
+            } else {
 ?>
                 <script>
                     Swal.fire({
@@ -235,9 +260,7 @@ if (isset($_POST['submit'])) {
                 </script>
 <?php
  
-        } else {
-            // Handle errors if product insertion fails
-            echo "Error inserting product into the database: " . mysqli_error($conn);
+ 
         }
     } else {
         echo "Product and stock insertion is only allowed for Rings and Necklaces category.";

@@ -127,9 +127,41 @@
 
                 <td> <?php echo $pro_desc; ?> </td>
 
-                <td> <?php echo $stock; ?> </td>
+                <?php
 
-               
+                if ($cat == 'Rings' || $cat == 'Necklaces') {
+                    // Assuming $conn is your mysqli connection
+
+                    // Prepare the statement
+                    $get_pro34 = "SELECT SUM(stock) as total FROM size WHERE id = ?";
+                    $stmt = mysqli_prepare($conn, $get_pro34);
+
+                    // Bind the parameter
+                    mysqli_stmt_bind_param($stmt, "s", $id);
+
+                    // Execute the statement
+                    mysqli_stmt_execute($stmt);
+
+                    // Bind the result
+                    mysqli_stmt_bind_result($stmt, $total_stock);
+
+                    // Fetch the result
+                    mysqli_stmt_fetch($stmt);
+
+                    // Close the statement
+                    mysqli_stmt_close($stmt);
+                ?>
+
+
+                <td> <?php echo $total_stock; ?> </td>
+               <?php
+                }  else {
+               ?>
+
+                <td> <?php echo $stock; ?> </td>
+                <?php
+                }  
+               ?>
 
                 <td style="text-align: center;">
                     <a href="#" class="delete-product" data-product="<?php echo $pro_title; ?>">
