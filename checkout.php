@@ -1,209 +1,208 @@
 <?php
-
 session_start();
 include 'db_conn.php';
 
 
 if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
-// Before the problematic section
-if(isset($_POST['order_btn'])){
+    // Before the problematic section
+    if(isset($_POST['order_btn'])){
 
-   $fname = $_POST['fname'];
-   $lname = $_POST['lname'];
-   $number = $_POST['phone'];
-   $email = $_POST['email'];
-   $method = $_POST['method'];
-   $address = $_POST['address'];
-   $province = $_POST['prvnce'];
-   $city = $_POST['city'];
-   $brgy = $_POST['brgy'];
-   $pin_code = $_POST['pin_code'];
-   $status = "Confirmed Order";
-   $currentDate = date("Y-m-d");
-   $currentTime = date("H:i:s");
+       $fname = $_POST['fname'];
+       $lname = $_POST['lname'];
+       $number = $_POST['phone'];
+       $email = $_POST['email'];
+       $method = $_POST['method'];
+       $address = $_POST['address'];
+       $province = $_POST['prvnce'];
+       $city = $_POST['city'];
+       $brgy = $_POST['brgy'];
+       $pin_code = $_POST['pin_code'];
+       $status = "Confirmed Order";
+       $currentDate = date("Y-m-d");
+       $currentTime = date("H:i:s");
 
-   $DateTime = date("Y-m-d H:i:s");
+       $DateTime = date("Y-m-d H:i:s");
 
-   $cart_query = mysqli_query($conn, "SELECT * FROM `cart` WHERE phone='{$_SESSION['phone']}'");
-   $price_total = 0;
-   if(mysqli_num_rows($cart_query) > 0){
-       // Create an array to store changes to stock for each product
-       $stock_changes = array();
+       $cart_query = mysqli_query($conn, "SELECT * FROM `cart` WHERE phone='{$_SESSION['phone']}'");
+       $price_total = 0;
+       if(mysqli_num_rows($cart_query) > 0){
+           // Create an array to store changes to stock for each product
+           $stock_changes = array();
 
-      while($product_item = mysqli_fetch_assoc($cart_query)){
-        $product_name[] = $product_item['title'] . ' (size ' . $product_item['size'] . ') ' . '(' . $product_item['quantity'] . ')';
-         $product_price = $product_item['price'] * $product_item['quantity'];
-         
-        $cart_query2 = mysqli_query($conn, "SELECT stock FROM paninda WHERE title='{$product_item['title']}'");
-        $product_item2 = mysqli_fetch_assoc($cart_query2);
-        $current_stock = $product_item2['stock'] - $product_item['quantity']; 
-        
-          // Store the change in stock for each product
-          $stock_changes[$product_item['title']] = $current_stock;
+          while($product_item = mysqli_fetch_assoc($cart_query)){
+            $product_name[] = $product_item['title'] . ' (size ' . $product_item['size'] . ') ' . '(' . $product_item['quantity'] . ')';
+             $product_price = $product_item['price'] * $product_item['quantity'];
 
-        $price_total += $product_price;
-       
-      }
-        $with_vat =  $price_total * .12;
-        $final_amount = $price_total + $with_vat + 50;
+            $cart_query2 = mysqli_query($conn, "SELECT stock FROM paninda WHERE title='{$product_item['title']}'");
+            $product_item2 = mysqli_fetch_assoc($cart_query2);
+            $current_stock = $product_item2['stock'] - $product_item['quantity']; 
 
-      foreach ($stock_changes as $title => $change) {
-        mysqli_query($conn, "UPDATE paninda SET stock = '$change' WHERE title = '$title'");
-      }
-   }
+              // Store the change in stock for each product
+              $stock_changes[$product_item['title']] = $current_stock;
 
-   
-   $user = $_SESSION['email'];
-   $user_info = mysqli_query($conn, "SELECT customer_id FROM users WHERE email='$user'");
-   $row_users = mysqli_fetch_array($user_info);
+            $price_total += $product_price;
 
-   $customer_id = $row_users['customer_id'];
+          }
+            $with_vat =  $price_total * .12;
+            $final_amount = $price_total + $with_vat + 50;
 
-   $n=10;
-   function get_id($n) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $randomString = '';
+          foreach ($stock_changes as $title => $change) {
+            mysqli_query($conn, "UPDATE paninda SET stock = '$change' WHERE title = '$title'");
+          }
+       }
 
-    for ($i = 0; $i < $n; $i++) {
-        $index = rand(0, strlen($characters) - 1);
-        $randomString .= $characters[$index];
-    }
 
-    return strtoupper($randomString);
-    }
+       $user = $_SESSION['email'];
+       $user_info = mysqli_query($conn, "SELECT customer_id FROM users WHERE email='$user'");
+       $row_users = mysqli_fetch_array($user_info);
 
-    $order_id = get_id($n);
+       $customer_id = $row_users['customer_id'];
 
-   $total_product = implode(', ',$product_name);
-   $detail_query = mysqli_query($conn, "INSERT INTO `order`(id, customer_id, order_id, fname, lname, number, email, method, address, province, city, brgy, pin_code, total_products, total_price, tax, status, DateTime) VALUES('', '$customer_id', '$order_id', '$fname', '$lname', '$number','$email','$method','$address','$province','$city','$brgy','$pin_code','$total_product','$final_amount', '$with_vat', '$status', '$DateTime')");
+       $n=10;
+       function get_id($n) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
 
-   mysqli_query($conn, "UPDATE nakatira SET address = '$address', province = '$province', city = '$city', brgy = '$brgy', pin_code = '$pin_code' WHERE email='$user'");
-  
-
-   if($cart_query && $detail_query){
-      echo "
-
-      
-    <div class='overlaylay' id='overlaylay'></div> 
-
-      <div class='receipt-container' id='receipt-container'>
-        
-      <div class='receipt_header'>
-      <h1>Receipt of Sale <span>Yantinju Shop</span></h1>
-      <h2>Address: $province, $address, $city, $brgy - $pin_code <span>Tel: $number</span></h2>
-      </div>
-  
-      <div class='receipt_body'>
-    
-      
-      <h2 style='text-align: center;'><span>$lname, $fname</span></h2>
-
-          <div class='date_time_con'>
-              <div class='date'>$currentDate</div>
-              <div class='time'>$currentTime</div>
-          </div>
-  
-          <div class='items'>
-              <table>
-          
-                  <thead>
-                      <th>QTY</th>
-                      <th>ITEM</th>
-                      <th>AMT</th>
-                  </thead>
-          
-                  <tbody>";
-
-        $total_price = 0; 
-        $total_price2 = 0; 
-        $with_vat = 0; 
-        $final_price = 0; 
-      
-      // Fetch data from the cart table and populate table rows dynamically
-      $cart_query2 = mysqli_query($conn, "SELECT * FROM `cart` WHERE phone='{$_SESSION['phone']}'");
-      while ($product_item2 = mysqli_fetch_assoc($cart_query2)) {
-          $quantity = $product_item2['quantity'];
-          $product_name = $product_item2['title'];   
-          $price_per_item = $product_item2['price'];
-          $total_price += $quantity * $price_per_item;
-          $total_price2 = $quantity * $price_per_item;
-                
-  
-          echo "
-          <tr>
-              <td>$quantity</td>
-              <td>$product_name</td>
-              <td>₱ $total_price2</td>
-          </tr>";
-      }
-      
-      $with_vat = $total_price * 0.12; 
-      $final_price = $total_price + $with_vat + 50;
-          echo"
-                  </tbody>
-  
-                  <tfoot>
-                  
-                    <tr>
-                        <td style='width: 100px;'>Subtotal</td>
-                        <td></td>
-                        <td>₱$total_price</td>
-                    </tr>
-
-                    <tr>
-                        <td style='width: 100px;'>VAT 12%</td>
-                        <td></td>
-                        <td>₱$with_vat</td>
-                    </tr>
-
-                      <tr>
-                          <td style='width: 100px;'>Shipping Fee</td>
-                          <td></td>
-                          <td>₱50</td>
-                      </tr>
-                      
-                      <tr>
-                          <td>Total Fee</td>
-                          <td></td>
-                          <td>₱$final_price</td>
-                      </tr>";
-                    
-                    echo "
-  
-                  </tfoot>
-  
-              </table>
-          </div>
-  
-      </div>
-  
-  
-  <h3>Thank You!</h3>
-  <a href='products.php?confirm=logged_in'><h3 style='border-top:none;'>Exit</h3></a>
-
-</div>";
-
-echo "<script>showReceipt();</script>";
-
-    $delete_query = mysqli_query($conn, "SELECT * FROM `cart`");
-    if(mysqli_num_rows($delete_query) > 0){
-        while($product_item = mysqli_fetch_assoc($delete_query)){
-            $product_name = $product_item['title'];
-            $product_size = $product_item['size']; 
-            $product_id = $product_item['id']; 
-            $no = $product_item['quantity']; 
-            
-            
-            mysqli_query($conn, "DELETE FROM cart WHERE title='$product_name' AND phone={$_SESSION['phone']}");
-
-            mysqli_query($conn, "UPDATE `size` SET stock = stock - $no WHERE id='$product_id' AND size='$product_size'");
+        for ($i = 0; $i < $n; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
         }
+
+        return strtoupper($randomString);
+        }
+
+        $order_id = get_id($n);
+
+       $total_product = implode(', ',$product_name);
+       $detail_query = mysqli_query($conn, "INSERT INTO `order`(id, customer_id, order_id, fname, lname, number, email, method, address, province, city, brgy, pin_code, total_products, total_price, tax, status, DateTime) VALUES('', '$customer_id', '$order_id', '$fname', '$lname', '$number','$email','$method','$address','$province','$city','$brgy','$pin_code','$total_product','$final_amount', '$with_vat', '$status', '$DateTime')");
+
+       mysqli_query($conn, "UPDATE nakatira SET address = '$address', province = '$province', city = '$city', brgy = '$brgy', pin_code = '$pin_code' WHERE email='$user'");
+      
+
+       if($cart_query && $detail_query){
+          echo "
+
+
+        <div class='overlaylay' id='overlaylay'></div> 
+
+          <div class='receipt-container' id='receipt-container'>
+            
+          <div class='receipt_header'>
+          <h1>Receipt of Sale <span>Yantinju Shop</span></h1>
+          <h2>Address: $province, $address, $city, $brgy - $pin_code <span>Tel: $number</span></h2>
+          </div>
+      
+          <div class='receipt_body'>
+        
+          
+          <h2 style='text-align: center;'><span>$lname, $fname</span></h2>
+
+              <div class='date_time_con'>
+                  <div class='date'>$currentDate</div>
+                  <div class='time'>$currentTime</div>
+              </div>
+      
+              <div class='items'>
+                  <table>
+              
+                      <thead>
+                          <th>QTY</th>
+                          <th>ITEM</th>
+                          <th>AMT</th>
+                      </thead>
+              
+                      <tbody>";
+
+            $total_price = 0; 
+            $total_price2 = 0; 
+            $with_vat = 0; 
+            $final_price = 0; 
+
+          // Fetch data from the cart table and populate table rows dynamically
+          $cart_query2 = mysqli_query($conn, "SELECT * FROM `cart` WHERE phone='{$_SESSION['phone']}'");
+          while ($product_item2 = mysqli_fetch_assoc($cart_query2)) {
+              $quantity = $product_item2['quantity'];
+              $product_name = $product_item2['title'];   
+              $price_per_item = $product_item2['price'];
+              $total_price += $quantity * $price_per_item;
+              $total_price2 = $quantity * $price_per_item;
+                    
+
+              echo "
+              <tr>
+                  <td>$quantity</td>
+                  <td>$product_name</td>
+                  <td>₱ $total_price2</td>
+              </tr>";
+          }
+
+          $with_vat = $total_price * 0.12; 
+          $final_price = $total_price + $with_vat + 50;
+              echo"
+                      </tbody>
+      
+                      <tfoot>
+                      
+                        <tr>
+                            <td style='width: 100px;'>Subtotal</td>
+                            <td></td>
+                            <td>₱$total_price</td>
+                        </tr>
+
+                        <tr>
+                            <td style='width: 100px;'>VAT 12%</td>
+                            <td></td>
+                            <td>₱$with_vat</td>
+                        </tr>
+
+                          <tr>
+                              <td style='width: 100px;'>Shipping Fee</td>
+                              <td></td>
+                              <td>₱50</td>
+                          </tr>
+                          
+                          <tr>
+                              <td>Total Fee</td>
+                              <td></td>
+                              <td>₱$final_price</td>
+                          </tr>";
+                        
+                        echo "
+      
+                      </tfoot>
+      
+                  </table>
+              </div>
+      
+          </div>
+      
+      
+      <h3>Thank You!</h3>
+      <a href='products.php?confirm=logged_in'><h3 style='border-top:none;'>Exit</h3></a>
+
+    </div>";
+
+    echo "<script>showReceipt();</script>";
+
+        $delete_query = mysqli_query($conn, "SELECT * FROM `cart`");
+        if(mysqli_num_rows($delete_query) > 0){
+            while($product_item = mysqli_fetch_assoc($delete_query)){
+                $product_name = $product_item['title'];
+                $product_size = $product_item['size']; 
+                $product_id = $product_item['id']; 
+                $no = $product_item['quantity']; 
+                
+                
+                mysqli_query($conn, "DELETE FROM cart WHERE title='$product_name' AND phone={$_SESSION['phone']}");
+
+                mysqli_query($conn, "UPDATE `size` SET stock = stock - $no WHERE id='$product_id' AND size='$product_size'");
+            }
+        }
+
+         
+       }
+
     }
-
-     
-   }
-
-}
 
 ?>
 
@@ -299,7 +298,11 @@ echo "<script>showReceipt();</script>";
                         <input type="email" placeholder="Email" name="email" value="<?php echo $_SESSION['email']; ?>" required>
                     </div>
                     <div class="inputBox">
-                        <input type="text" name="method" value="Cash on Delivery" readonly>
+                        <select name="method" required>
+                            <option value="Cash on Delivery">Cash on Delivery</option>
+                            <option value="GCash">GCash</option>
+                            <!-- Add more payment methods if needed -->
+                        </select>
                     </div>
                     <div class="inputBox">
                         <input type="text" placeholder="Address" name="address" value="<?php echo $productShipping; ?>" required>

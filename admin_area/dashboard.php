@@ -52,43 +52,41 @@
                 while ($row2 = mysqli_fetch_assoc($run_pro2)) {
                     $pendingIncome = $row2['pending_income'];
                     $pending_income += $pendingIncome;
+                    $get_daily_sales = "SELECT SUM(total_price) AS daily_sales FROM `complete_order` WHERE DATE(DateTime) = '$today'";
+                        $run_daily_sales = mysqli_query($conn, $get_daily_sales);
+                        $row_daily_sales = mysqli_fetch_assoc($run_daily_sales);
+                        $daily_sales = $row_daily_sales['daily_sales'];
                 }
                 ?>
-                    <h4>Daily Sales <br><small class="text-success">As of <?php echo $today2 ?></small></h4>
-                    <h1>₱<?php echo number_format($TotalIncome, 2); ?></h1>
-                
-                </div>
+                        <h4>Daily Sales <br><small class="text-success">As of <?php echo $today2 ?></small></h4>
+                        <h1>₱<?php echo number_format($daily_sales, 2); ?></h1>
+                    </div>
                 </div>
            
-                <!-- Monthly Sales report  -->
+                <!-- Monthly Sales report -->
                 <div class="analytic">
+                    <?php
+                    // Get the current month
+                    $current_month = date('m');
+                    $current_year = date('Y');
+
+                    // Fetch monthly sales data from the database
+                    $get_monthly_sales = "SELECT SUM(total_price) AS total_sales
+                                          FROM complete_order
+                                          WHERE MONTH(DateTime) = '$current_month' AND YEAR(DateTime) = '$current_year'";
+                    $run_monthly_sales_query = mysqli_query($conn, $get_monthly_sales);
+                    $monthly_sales = 0;
+
+                    // Check if there are results
+                    if (mysqli_num_rows($run_monthly_sales_query) > 0) {
+                        $row = mysqli_fetch_assoc($run_monthly_sales_query);
+                        $monthly_sales = $row['total_sales'];
+                    }
+                    ?>
                     <div class="analytic-icon"><i class="fa-solid fa-money-check-dollar"></i></div>
                     <div class="analytic-info">
-                        <?php
-                        $current_date = date("Y-m-d");
-                        $month_start_date = date('Y-m-01', strtotime($current_date));
-                        $month_end_date = date('Y-m-t', strtotime($current_date));
-
-                        $get_monthly_sales = "SELECT DATE(DateTime) as monthly, SUM(kinita) as total_sales 
-                                            FROM `sales` 
-                                            WHERE DateTime BETWEEN '$month_start_date' AND '$month_end_date' 
-                                            GROUP BY MONTH(monthly)";
-
-                        $run_monthly_sales_query = $conn->query($get_monthly_sales);
-
-                        // Step 3: Process the retrieved data
-                        $monthly_sales = array();
-                        $total_monthly_sales = 0; // Initialize total monthly sales variable
-
-                        if ($run_monthly_sales_query->num_rows > 0) {
-                            while($row = $run_monthly_sales_query->fetch_assoc()) {
-                                $monthly_sales[$row['monthly']] = $row['total_sales'];
-                                $total_monthly_sales += $row['total_sales']; // Accumulate total monthly sales
-                            }
-                        }
-                        ?>
-                        <h4>Monthly Sales <br><small class="text-success">As of <?php echo $today3 ?></small></h4>
-                        <h1>₱<?php echo number_format($total_monthly_sales, 2); ?></h1>
+                        <h4>Monthly Sales <br><small class="text-success">As of <?php echo date('F Y'); ?></small></h4>
+                        <h1>₱<?php echo number_format($monthly_sales, 2); ?></h1>
                     </div>
                 </div>
 
