@@ -65,12 +65,12 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                 <table>
 
                     <thead>
-                        <th>image</th>
-                        <th>name (size)</th>
-                        <th style="width: 9.6%">price</th>
-                        <th>quantity</th>
-                        <th style="width: 10%">total price</th>
-                        <th>action</th>
+                        <th>Product</th>
+                        <th>Name (size)</th>
+                        <th style="width: 9.6%">Price</th>
+                        <th>Quantity</th>
+                        <th style="width: 10%">Total price:</th>
+                        <th>Action</th>
                     </thead>
 
                     <tbody>
@@ -149,7 +149,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                        
                         <tr class="table-bottom">
                             <td><a href="products.php?confirm=logged_in" class="option-btn" style="margin-top: 0;"><- continue shopping</a></td>
-                            <td colspan="3"><b>grand total:<b></td>
+                            <td colspan="3"><b>Grand total:<b></td>
                             <td>
                                 <span style="float: left;">₱</span>
                                 <span style="float: right;"><b><?php echo number_format($final_total, 2); ?></b></td></span>
