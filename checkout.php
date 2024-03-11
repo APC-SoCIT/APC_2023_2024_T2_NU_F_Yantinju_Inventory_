@@ -75,7 +75,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
 
         mysqli_query($conn, "UPDATE nakatira SET address = '$address', province = '$province', city = '$city', brgy = '$brgy', pin_code = '$pin_code' WHERE email='$user'");
 
-
+        //Receipt//
         if ($cart_query && $detail_query) {
             echo "
 
