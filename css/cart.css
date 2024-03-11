@@ -153,6 +153,41 @@
  }
  
 
+
+/* Add this section for GCash payment styling */
+.checkout-form form .flex .inputBox label {
+   font-size: 1.7rem;
+   color: var(--black);
+   margin-bottom: 0.5rem;
+}
+
+.checkout-form form .flex .inputBox .gcash-instruction {
+   font-size: 1.5rem;
+   color: var(--black);
+   margin-bottom: 1rem;
+}
+
+.checkout-form form .flex .inputBox .gcash-logo {
+   width: 50px; /* Adjust as needed */
+   margin-bottom: 1rem;
+}
+
+.checkout-form form .flex .inputBox .gcash-instruction p {
+   margin-bottom: 0.5rem;
+}
+
+.checkout-form form .flex .inputBox .gcash-number {
+   background-color: var(--white);
+   font-size: 1.7rem;
+   color: var(--black);
+   border-radius: 0.5rem;
+   margin: 1rem 0;
+   padding: 1.2rem 1.4rem;
+   border: var(--border);
+}
+
+/* End of GCash payment styling */
+
  /**** -------------------------- checkout section ------------------------------- ****/
  .display-order{
    max-width: 50rem;
