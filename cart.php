@@ -24,6 +24,8 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
         mysqli_query($conn, "DELETE FROM `cart`");
         echo "<script>window.open('cart.php?confirm=logged_in','_self')</script>";
      }     
+
+
     
 
  ?>
@@ -65,12 +67,12 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                 <table>
 
                     <thead>
-                        <th>Product</th>
-                        <th>Name (size)</th>
-                        <th style="width: 9.6%">Price</th>
-                        <th>Quantity</th>
-                        <th style="width: 10%">Total price:</th>
-                        <th>Action</th>
+                        <th>image</th>
+                        <th><span style="float: left;">product name</span> <span style="float: right;">(size)</span></th>
+                        <th style="width: 9.6%">price</th>
+                        <th><span style="float: left;">quantity</span> </th>
+                        <th style="width: 10%">total price</th>
+                        <th>action</th>
                     </thead>
 
                     <tbody>
@@ -82,15 +84,15 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                         $grand_total = 0;
                         if(mysqli_num_rows($select_cart) > 0){
                             while($fetch_cart = mysqli_fetch_assoc($select_cart)){
-                                
+                            
                         ?>
 
                         <tr>
                             <td><img src="admin_area/images/products/<?php echo $fetch_cart['img1']; ?>" style="display: block; margin: 0 auto; max-width: 100px; max-height: 100px;" alt=""></td>
                             <td>
-                            <?php echo $fetch_cart['title']; ?>
+                            <span style="float: left;"><?php echo $fetch_cart['title']; ?></span>
                             <?php if($fetch_cart['size'] > 0): ?>
-                                (<?php echo $fetch_cart['size']; ?>)
+                                <span style="float: right;">(<?php echo $fetch_cart['size']; ?>)</span>
                             <?php endif; ?>
                             </td>
                             <td>
@@ -100,7 +102,56 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                             <td>
                             <form action="" method="post">
                                 <input type="hidden" name="update_quantity_id"  value="<?php echo $fetch_cart['id']; ?>" >
-                                <input type="number" name="update_quantity" min="1"  value="<?php echo $fetch_cart['quantity']; ?>" >
+                                <?php 
+                                $select_item = mysqli_query($conn, "SELECT * FROM `paninda` WHERE title='{$fetch_cart['title']}'"); 
+                                $fetch_item = mysqli_fetch_assoc($select_item);
+                                $quantity = $fetch_item['stock'];
+                                $category = $fetch_item['category'];
+                                $id3 = $fetch_item['id'];
+
+                                if ($category !== 'Rings' && $category !== 'Necklaces'){
+                                    if ($quantity >= $fetch_cart['quantity']){ ?>
+                                        <input type="number" name="update_quantity" min="1" max="<?php echo $quantity ?>"  value="<?php echo $fetch_cart['quantity']; ?>" onkeypress="if(event.keyCode==13) { limitInputToMax(this); return false; }">
+                                    <?php } elseif ($quantity < $fetch_cart['quantity']){ ?>
+                                        <input type="number" name="update_quantity" min="1" max="<?php echo $quantity ?>"  value="<?php echo $quantity ?>" onkeypress="if(event.keyCode==13) { limitInputToMax(this); return false; }">
+                                    <?php mysqli_query($conn, "UPDATE `cart` SET quantity = '$quantity' WHERE id = '{$fetch_cart['id']}'");
+                                        } elseif ($quantity === 0){
+                                            mysqli_query($conn, "DELETE FROM `cart` WHERE id = '{$fetch_cart['id']}'");
+                                        }
+                                } else {
+                                    
+                                $select_item2 = mysqli_query($conn, "SELECT * FROM `size` WHERE id='$id3' AND size={$fetch_cart['size']}"); 
+                                $fetch_item2 = mysqli_fetch_assoc($select_item2);
+                                $quantity2 = $fetch_item2['stock'];
+                                
+                                    if ($quantity2 >= $fetch_cart['quantity']){ ?>
+                                        <input type="number" name="update_quantity" min="1" max="<?php echo $quantity2 ?>"  value="<?php echo $fetch_cart['quantity']; ?>" onkeypress="if(event.keyCode==13) { limitInputToMax(this); return false; }">
+                                    <?php } elseif ($quantity2 < $fetch_cart['quantity']){ ?>
+                                        <input type="number" name="update_quantity" min="1" max="<?php echo $quantity2 ?>"  value="<?php echo $quantity2 ?>" onkeypress="if(event.keyCode==13) { limitInputToMax(this); return false; }">
+                                    <?php mysqli_query($conn, "UPDATE `cart` SET quantity = '$quantity2' WHERE id = '{$fetch_cart['id']}'");
+                                    } elseif ($quantity2 === 0){
+
+                                    mysqli_query($conn, "DELETE FROM `cart` WHERE id = '{$fetch_cart['id']}'");
+                                    ?>
+
+                                <?php
+                                    }
+                                } 
+                                ?>
+
+                            <script>
+                                // JavaScript function to limit input value to maximum when user presses Enter
+                                function limitInputToMax(input) {
+                                    var maxValue = parseInt(input.getAttribute('max')); // Get the maximum value
+                                    var enteredValue = parseInt(input.value); // Get the entered value
+
+                                    // If the entered value exceeds the maximum value, set it to the maximum value
+                                    if (enteredValue > maxValue) {
+                                        input.value = maxValue;
+                                    }
+                                }
+                            </script>
+
                                 <input type="submit" value="update" name="update_update_btn">
                             </form>   
                             </td>
@@ -149,7 +200,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
                        
                         <tr class="table-bottom">
                             <td><a href="products.php?confirm=logged_in" class="option-btn" style="margin-top: 0;"><- continue shopping</a></td>
-                            <td colspan="3"><b>Grand total:<b></td>
+                            <td colspan="3"><b>grand total:<b></td>
                             <td>
                                 <span style="float: left;">₱</span>
                                 <span style="float: right;"><b><?php echo number_format($final_total, 2); ?></b></td></span>

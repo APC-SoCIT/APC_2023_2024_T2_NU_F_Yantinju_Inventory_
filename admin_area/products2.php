@@ -78,6 +78,13 @@
                     .disabled-row {
                         background-color: #ffcccc; /* light red background */
                     }
+
+                    .low-stock {
+                        background-color: #ffcc66; /* Orange background */
+                    }
+                    .fresh-row {
+                        background-color: #ADD8E6; /* Change background color to blue for today's date */
+                    }
                 </style>
 
                 <tbody>
@@ -95,9 +102,59 @@
                         $price = $row_pro['price'];
                         $stock = $row_pro['stock'];
                         $pro_desc = $row_pro['status'];
+                        $pro_date = $row_pro['Date'];
                         $i++;
+                        $row_class = '';
+                        
 
-                        $row_class = ($pro_desc == 'Archive') ? 'disabled-row' : '';
+                // Check if product is archived
+                if ($pro_desc == 'Archive') {
+                    $row_class .= ' disabled-row';
+                } elseif ($stock == 0) {
+                    // Check if stock is 0
+                    $row_class .= ' disabled-row';
+                    // Update status to 'Archive' if stock is 0
+                    mysqli_query($conn, "UPDATE paninda SET status='Archive' WHERE id='$id'");
+                }  // Check if product is archived
+                if ($pro_desc == 'Archive') {
+                    $row_class .= ' disabled-row';
+                } elseif ($stock == 0) {
+                    // Check if stock is 0
+                    $row_class .= ' disabled-row';
+                    // Update status to 'Archive' if stock is 0
+                    mysqli_query($conn, "UPDATE paninda SET status='Archive' WHERE id='$id'");
+                } elseif ($cat == 'Rings' || $cat == 'Necklaces') {
+                    $get_prosize = "SELECT * FROM size WHERE id='$id' AND size IN (14, 16, 18, 20, 24)";
+                    $run_prosize = mysqli_query($conn, $get_prosize);
+                    $hasLowStock = false; // Flag to track if any size has low stock
+                    
+                    // Check if any rows are returned
+                    if(mysqli_num_rows($run_prosize) > 0) {
+                        // Loop through each row
+                        while($row_prosize = mysqli_fetch_array($run_prosize)) {
+                            $stock2 = $row_prosize['stock'];
+                            // Check if stock is low
+                            if($stock2 === '0'){
+                                $hasLowStock = true;
+                                break; // Exit the loop if any size has low stock
+                            }
+                        }
+                    }
+            
+                    if ($hasLowStock) {
+                        $row_class .= ' low-stock';
+                    }
+                } elseif ($stock < 20 && $stock >= 1) {
+                    // Add low-stock class if stock is below 20
+                    $row_class .= ' low-stock';
+                }
+
+                // Check if Date is today
+                elseif (date('Y-m-d', strtotime($pro_date)) == date('Y-m-d')) {
+                    $row_class .= ' fresh-row'; // Add today-row class if Date is today
+                }
+                        
+
                 ?>
 
 
@@ -127,9 +184,42 @@
 
                 <td> <?php echo $pro_desc; ?> </td>
 
-                <td> <?php echo $stock; ?> </td>
+                <?php
 
-               
+                if ($cat == 'Rings' || $cat == 'Necklaces') {
+                    // Assuming $conn is your mysqli connection
+
+                    // Prepare the statement
+                    $get_pro34 = "SELECT SUM(stock) as total FROM size WHERE id = ?";
+                    $stmt = mysqli_prepare($conn, $get_pro34);
+
+                    // Bind the parameter
+                    mysqli_stmt_bind_param($stmt, "s", $id);
+
+                    // Execute the statement
+                    mysqli_stmt_execute($stmt);
+
+                    // Bind the result
+                    mysqli_stmt_bind_result($stmt, $total_stock);
+
+                    // Fetch the result
+                    mysqli_stmt_fetch($stmt);
+
+                    // Close the statement
+                    mysqli_stmt_close($stmt);
+                    
+                ?>
+
+
+                <td> <?php echo $total_stock; ?> </td>
+               <?php
+                }  else {
+               ?>
+
+                <td> <?php echo $stock; ?> </td>
+                <?php
+                }  
+               ?>
 
                 <td style="text-align: center;">
                     <a href="#" class="delete-product" data-product="<?php echo $pro_title; ?>">

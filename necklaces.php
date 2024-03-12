@@ -6,19 +6,37 @@
                 <?php
                     include('db_conn.php');
 
-                    // Set the number of products per page
-                    $per_page = 6;
+                    if($login == 'notlogged_in') {
+                        // Set the number of products per page
+                        $per_page = 6;
 
-                    // Query to count the total number of available products
-                    $count_query = "SELECT COUNT(*) AS total FROM paninda WHERE category='Necklaces' AND status='Available'";
-                    $count_result = mysqli_query($conn, $count_query);
-                    $total_products = mysqli_fetch_assoc($count_result)['total'];
-                    // Calculate the total number of pages
-                    $total_pages = ceil($total_products / $per_page);
+                        // Query to count the total number of available products
+                        $count_query = "SELECT COUNT(*) AS total FROM paninda WHERE category='Necklaces' AND status='Available'";
+                        $count_result = mysqli_query($conn, $count_query);
+                        $total_products = mysqli_fetch_assoc($count_result)['total'];
+                        // Calculate the total number of pages
+                        $total_pages = ceil($total_products / $per_page);
 
-                    // Output pagination links
-                    for ($i = 1; $i <= $total_pages; $i++) {
-                        echo '<li><a href="?page=' . $i . '">' . $i . '</a></li>';
+                        // Output pagination links
+                        for ($i = 1; $i <= $total_pages; $i++) {
+                            echo '<li><a href="?Necklaces&page=' . $i . '&confirm=notlogged_in">' . $i . '</a></li>';
+                        }
+
+                    } else {
+                        // Set the number of products per page
+                        $per_page = 6;
+
+                        // Query to count the total number of available products
+                        $count_query = "SELECT COUNT(*) AS total FROM paninda WHERE category='Necklaces' AND status='Available'";
+                        $count_result = mysqli_query($conn, $count_query);
+                        $total_products = mysqli_fetch_assoc($count_result)['total'];
+                        // Calculate the total number of pages
+                        $total_pages = ceil($total_products / $per_page);
+
+                        // Output pagination links
+                        for ($i = 1; $i <= $total_pages; $i++) {
+                            echo '<li><a href="?Necklaces&page=' . $i . '&confirm=logged_in">' . $i . '</a></li>';
+                        }
                     }
                 ?>
                 </ul>

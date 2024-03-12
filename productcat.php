@@ -109,11 +109,13 @@
                                         </script>
                                         <?php
                                     } elseif($success == 2) {
+                                        
+                                    $quantity = $_GET['count'];
                                         ?>
                                         <script>
                                             // Display error alert
                                             Swal.fire({
-                                                title: '+1 <?php echo $product; ?> is already added',
+                                                title: '+<?php echo $quantity ?> to <?php echo $product; ?> is added successfully',
                                                 icon: 'info'
                                             });
                                         </script>
@@ -175,11 +177,13 @@
                                         </script>
                                         <?php
                                     } elseif($success == 2) {
+                                        
+                                    $quantity = $_GET['count'];
                                         ?>
                                         <script>
                                             // Display error alert
                                             Swal.fire({
-                                                title: '+1 <?php echo $product; ?> is already added',
+                                                title: '+<?php echo $quantity ?> to <?php echo $product; ?> is added successfully',
                                                 icon: 'info'
                                             });
                                         </script>

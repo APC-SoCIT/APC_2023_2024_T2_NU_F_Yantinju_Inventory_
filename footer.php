@@ -8,7 +8,7 @@
                 <h4>Socials</h4>
                 <a href="https://www.facebook.com/profile.php?id=100064226044959">FACEBOOK</a>
                 <a href="https://www.tiktok.com/@yantin.accessories" target="_blank">TIKTOK</a>
-                <a href="about_us.php" target="_blank">ABOUT US</a>
+                <a href="aboutus.php?confirm=logged_in">ABOUT US</a>
             </div>
             <div class="content_4">
                 <h4>NEWLETTER</h4>

@@ -59,6 +59,9 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
     if(isset($_GET['view_detail'])){
         include("view_detail.php");
     }
+    if(isset($_GET['view_complete_detail'])){
+        include("view_complete_detail.php");
+    }
     if(isset($_GET['report'])){
         include("report.php");
     }

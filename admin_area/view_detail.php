@@ -244,7 +244,7 @@ if (isset($_POST['change'])) {
     mysqli_query($conn, $transfer_query);
 
     if ($product_stats == "Product Delivered") {
-        $sales_info = mysqli_query($conn, "SELECT * FROM `order` WHERE order_id = '$no' AND status='Product Delivered'");
+        $sales_info = mysqli_query($conn, "SELECT * FROM `order` WHERE order_id = '$order_id' AND status='Product Delivered'");
         $row_sales = mysqli_fetch_array($sales_info);
     
         $get_pro = $row_sales['total_price'];

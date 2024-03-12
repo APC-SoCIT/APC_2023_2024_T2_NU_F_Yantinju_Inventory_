@@ -48,7 +48,8 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
         <main class="card">
             
 
-            <h2 class="title">FAQ/s</h2>
+         <h2 class="title text-9xl font-bold">FAQ/s</h2>
+
 
             <div class="acc-container">
 

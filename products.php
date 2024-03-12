@@ -2,8 +2,6 @@
 session_start();
 include "db_conn.php";
 
-if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
-
  ?>
 
 <!DOCTYPE html>
@@ -64,8 +62,5 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
 </html>
 
 <?php 
-}else{
-     header("Location: index.php");
-     exit();
-}
+
  ?>

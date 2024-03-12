@@ -1,5 +1,7 @@
 <?php
 
+$cat = $_GET['category'];
+
 $edit_id = $_GET['edit_product'];
 
 $get_p = "select * from paninda where title='$edit_id'";
@@ -12,7 +14,6 @@ $p_id = $row_edit['id'];
 
 $p_title = $row_edit['title'];
 
-$cat = $row_edit['category'];
 
 $p_image1 = $row_edit['img1'];
 
@@ -172,7 +173,6 @@ $cat_title = $row_cat['category'];
 
                 <?php
 
-                $cat = $_GET['category'];
 
                 if($cat == 'Necklaces' || $cat == 'Rings') {
                     
@@ -380,11 +380,19 @@ if(isset($_POST['update'])){
 
     $product_id = $_POST['product_id'];
     $product_title = $_POST['product_title'];
-    $cat = $_POST['cat'];
+    $cat2 = $_POST['cat'];
     $product_price = $_POST['product_price'];
     $product_desc = $_POST['product_desc'];
-    $status = "Available";
+    $product_img1 = $_FILES['product_img1']['name'];
+    $temp_name1 = $_FILES['product_img1']['tmp_name'];
 
+    if(empty($product_img1)){
+
+        $product_img1 = $new_p_image1;
+        
+        }
+
+        move_uploaded_file($temp_name1,"images/products/$product_img1");
     // Initialize an array to store the quantities of different sizes
     $sizes = array();
 
@@ -396,28 +404,49 @@ if(isset($_POST['update'])){
         $sizes['18'] = $_POST['product_quantity4'];
         $sizes['20'] = $_POST['product_quantity5'];
         $sizes['24'] = $_POST['product_quantity6'];
+
+        // Update the product information in the database
+        $update_product = "UPDATE paninda SET title='$product_title', category='$cat', img1='$product_img1', price=$product_price, description='$product_desc' WHERE id='$product_id'";
+        $run_product = mysqli_query($conn, $update_product);
+
+        $total_stock = 0;
+        // Update the quantities for each size
+        foreach ($sizes as $size => $quantity) {
+            if ($size != 'overall') {
+
+                $total_stock += $quantity;
+                // Update the quantity for the specific size
+                $update_size = "UPDATE size SET stock='$quantity' WHERE id='$product_id' AND size='$size'";
+                $run_size = mysqli_query($conn, $update_size);
+            }
+        }
+
+        // Update the product information in the database
+        $update_product2 = "UPDATE paninda SET stock=$total_stock WHERE id='$product_id'";
+        $run_product2 = mysqli_query($conn, $update_product2);
+
+
+        if($run_product){
+            echo "<script> alert('Product has been updated successfully') </script>";
+            echo "<script>window.open('adminpanel.php?products2','_self')</script>";
+        } elseif($run_product2){
+            echo "<script> alert('Product has been updated successfully') </script>";
+            echo "<script>window.open('adminpanel.php?products2','_self')</script>";
+        }
     } else {
         // If not necklaces or rings, retrieve the overall quantity
-        $sizes['overall'] = $_POST['product_quantity'];
-    }
+        $stonks = $_POST['product_quantity'];
 
-    // Update the product information in the database
-    $update_product = "UPDATE paninda SET category='$cat', title='$product_title', price='$product_price', description='$product_desc', status='$status' WHERE id='$product_id'";
-    $run_product = mysqli_query($conn, $update_product);
+        // Update the product information in the database
+        $update_product = "UPDATE paninda SET title='$product_title', category='$cat', img1='$product_img1', price=$product_price, stock='$stonks', description='$product_desc' WHERE id='$product_id'";
+        $run_product = mysqli_query($conn, $update_product);
 
-    // Update the quantities for each size
-    foreach ($sizes as $size => $quantity) {
-        if ($size != 'overall') {
-            // Update the quantity for the specific size
-            $update_size = "UPDATE size SET stock='$quantity' WHERE id='$product_id' AND size='$size'";
-            $run_size = mysqli_query($conn, $update_size);
+        if($run_product){
+            echo "<script> alert('Product has been updated successfully') </script>";
+            echo "<script>window.open('adminpanel.php?products2','_self')</script>";
         }
     }
 
-    if($run_product){
-        echo "<script> alert('Product has been updated successfully') </script>";
-        echo "<script>window.open('adminpanel.php?products2','_self')</script>";
-    }
 }
 ?>
 
