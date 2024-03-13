@@ -170,128 +170,100 @@ if (isset($_SESSION['email']) && isset($_SESSION['password'])) {
 
 }
 
-// Second GCash payment receipt triggered by the Proceed button
+// Payment Review Section triggered by the Proceed button
 if (isset($_POST['proceed_btn'])) {
     echo "
-
-
         <div class='overlaylay' id='overlaylay'></div> 
+        <div class='receipt-container' id='receipt-container'>
+            <div class='receipt_header'>
+                <h1>Payment Review</h1>
+                <h2>Gcash Payment</h2>
+            </div>
+            <div class='receipt_body'>
+                <h2 style='text-align: center;'><span>$lname, $fname</span></h2>
+                <div class='date_time_con'>
+                    <div class='date'>$currentDate</div>
+                    <div class='time'>$currentTime</div>
+                </div>
+                <div class='items'>
+                    <table>
+                        <thead>
+                            <th>QTY</th>
+                            <th>ITEM</th>
+                            <th>AMT</th>
+                        </thead>
+                        <tbody>";
 
-          <div class='receipt-container' id='receipt-container'>
-            
-          <div class='receipt_header'>
-          <h1>Receipt of Sale <span>Yantinju Shop</span></h1>
-          <h2>Gcash Payment</h2>
-          </div>
-      
-          <div class='receipt_body'>
-        
-          
-          <h2 style='text-align: center;'><span>$lname, $fname</span></h2>
+    $total_price = 0;
+    $with_vat = 0;
+    $final_price = 0;
 
-              <div class='date_time_con'>
-                  <div class='date'>$currentDate</div>
-                  <div class='time'>$currentTime</div>
-              </div>
-      
-              <div class='items'>
-                  <table>
-              
-                      <thead>
-                          <th>QTY</th>
-                          <th>ITEM</th>
-                          <th>AMT</th>
-                      </thead>
-              
-                      <tbody>";
+    // Fetch data from the cart table and populate table rows dynamically
+    $cart_query2 = mysqli_query($conn, "SELECT * FROM `cart` WHERE phone='{$_SESSION['phone']}'");
+    while ($product_item2 = mysqli_fetch_assoc($cart_query2)) {
+        $quantity = $product_item2['quantity'];
+        $product_name = $product_item2['title'];
+        $price_per_item = $product_item2['price'];
+        $total_price += $quantity * $price_per_item;
 
-            $total_price = 0;
-            $total_price2 = 0;
-            $with_vat = 0;
-            $final_price = 0;
+        echo "
+            <tr>
+                <td>$quantity</td>
+                <td>$product_name</td>
+                <td>₱ " . number_format($quantity * $price_per_item, 2) . "</td>
+            </tr>";
+    }
 
-            // Fetch data from the cart table and populate table rows dynamically
-            $cart_query2 = mysqli_query($conn, "SELECT * FROM `cart` WHERE phone='{$_SESSION['phone']}'");
-            while ($product_item2 = mysqli_fetch_assoc($cart_query2)) {
-                $quantity = $product_item2['quantity'];
-                $product_name = $product_item2['title'];
-                $price_per_item = $product_item2['price'];
-                $total_price += $quantity * $price_per_item;
-                $total_price2 = $quantity * $price_per_item;
+    $with_vat = $total_price * 0.12;
+    $final_price = $total_price + $with_vat + 50;
+    echo "
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td style='width: 100px;'>Subtotal</td>
+                                <td></td>
+                                <td>₱" . number_format($total_price, 2) . "</td>
+                            </tr>
+                            <tr>
+                                <td style='width: 100px;'>VAT 12%</td>
+                                <td></td>
+                                <td>₱" . number_format($with_vat, 2) . "</td>
+                            </tr>
+                            <tr>
+                                <td style='width: 100px;'>Shipping Fee</td>
+                                <td></td>
+                                <td>₱50</td>
+                            </tr>
+                            <tr>
+                                <td>Paid Fee</td>
+                                <td></td>
+                                <td>₱" . number_format($final_price, 2) . "</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <h3>Thank You!</h3>
+            <a href='products.php?confirm=logged_in'><h3 style='border-top:none;'>Exit</h3></a>
+        </div>";
 
-                echo "
-              <tr>
-                  <td>$quantity</td>
-                  <td>$product_name</td>
-                  <td>₱ $total_price2</td>
-              </tr>";
-            }
+    echo "<script>showReceipt();</script>";
 
-            $with_vat = $total_price * 0.12;
-            $final_price = $total_price + $with_vat + 50;
-            echo "
-                      </tbody>
-      
-                      <tfoot>
-                      
-                        <tr>
-                            <td style='width: 100px;'>Subtotal</td>
-                            <td></td>
-                            <td>₱$total_price</td>
-                        </tr>
+    // Delete items from the cart after payment review
+    $delete_query = mysqli_query($conn, "SELECT * FROM `cart`");
+    if (mysqli_num_rows($delete_query) > 0) {
+        while ($product_item = mysqli_fetch_assoc($delete_query)) {
+            $product_name = $product_item['title'];
+            $product_size = $product_item['size'];
+            $product_id = $product_item['id'];
+            $no = $product_item['quantity'];
 
-                        <tr>
-                            <td style='width: 100px;'>VAT 12%</td>
-                            <td></td>
-                            <td>₱$with_vat</td>
-                        </tr>
-
-                          <tr>
-                              <td style='width: 100px;'>Shipping Fee</td>
-                              <td></td>
-                              <td>₱50</td>
-                          </tr>
-                          
-                          <tr>
-                              <td>Paid Fee</td>
-                              <td></td>
-                              <td>₱$final_price</td>
-                          </tr>";
-
-            echo "
-      
-                      </tfoot>
-      
-                  </table>
-              </div>
-      
-          </div>
-      
-      
-      <h3>Thank You!</h3>
-      <a href='products.php?confirm=logged_in'><h3 style='border-top:none;'>Exit</h3></a>
-
-    </div>";
-
-            echo "<script>showReceipt();</script>";
-
-            $delete_query = mysqli_query($conn, "SELECT * FROM `cart`");
-            if (mysqli_num_rows($delete_query) > 0) {
-                while ($product_item = mysqli_fetch_assoc($delete_query)) {
-                    $product_name = $product_item['title'];
-                    $product_size = $product_item['size'];
-                    $product_id = $product_item['id'];
-                    $no = $product_item['quantity'];
-
-                    mysqli_query($conn, "DELETE FROM cart WHERE title='$product_name' AND phone={$_SESSION['phone']}");
-
-                    mysqli_query($conn, "UPDATE `size` SET stock = stock - $no WHERE id='$product_id' AND size='$product_size'");
-                }
-            }
+            mysqli_query($conn, "DELETE FROM cart WHERE title='$product_name' AND phone={$_SESSION['phone']}");
+            mysqli_query($conn, "UPDATE `size` SET stock = stock - $no WHERE id='$product_id' AND size='$product_size'");
         }
-    
-
-    ?>
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
